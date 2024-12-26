@@ -1,0 +1,95 @@
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap");
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+html,body{
+    font-family: "Oswald", sans-serif;
+    font-size: 62.5%;
+}
+body{
+    font-size: 1.6rem;
+}
+.container{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    gap: 4rem;
+}
+.search{
+    display: flex;
+    width: 50%;
+    max-width: 60rem;
+}
+.search input{
+    width: 100%;
+    padding: 0.5rem , 1rem;
+}
+.search input:focus-visible{
+    outline: 1px solid purple;
+}
+
+.primary_btn{
+    background-color: rgb(196, 16, 76);
+    color: white;
+    padding: 0.5rem , 1rem;
+}
+.primary_btn:hover{
+    background: rgba(228, 56, 84, 0.89);
+}
+.primary_btn:active {
+    background:  rgba(0, 0, 0, 0.788);
+  }
+.profile_box{
+    padding: 4rem 2rem;
+    box-shadow: 0 0 1rem  rgba(0, 0, 0, 0.1);
+    width: 90%;
+    transition: 0.5s ease-in;
+    
+}
+.profile_box:hover{
+    transform: rotate(-2deg) scale(1.02);
+    transition: 0.5s ease-in;
+}
+.avatar{
+    height: 10rem;
+    width: 10rem;
+    border-radius: 50%;
+}
+.avatar img {
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+}
+.top_section{
+    display: flex;
+    justify-content: space-between;
+}
+.top_section button{
+    align-self:center ;
+}
+.left{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.left h1{
+font-size: 1.6rem;
+}
+.about{
+ margin: 2rem;   
+}
+.status{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem,1fr));
+
+}
+.status-item{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
