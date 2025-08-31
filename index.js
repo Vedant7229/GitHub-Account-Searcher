@@ -4,27 +4,26 @@ const searchBtnEl = document.getElementById("searchBtn");
 const profileContainerEl = document.getElementById("profileContainer");
 const loadingEl = document.getElementById("loading");
 
-// Function to generate the user profile HTML
 const generateProfile = (profile) => {
     return `
         <div class="profile_box">
             <div class="top_section">
                 <div class="left">
                     <div class="avatar">
-                        <img src="${profile.avatar_url}" alt="Avatar">
+                        <img src="${profile.avatar_url}" alt="${profile.login}'s avatar">
                     </div>
                     <div class="self">
-                        <h1>${profile.name || "No Name Provided"}</h1> <!-- CHANGE: Added fallback value -->
-                        <h1>${profile.login}</h1>
+                        <h1>${profile.name || "No Name Provided"}</h1>
+                        <h1>@${profile.login}</h1>
                     </div>
                 </div>
-                <a href="${profile.html_url}" target="_blank"> <!-- CHANGE: Fixed typo from herf to href -->
+                <a href="${profile.html_url}" target="_blank">
                     <button class="primary_btn">Check Profile</button>
                 </a>
             </div>
             <div class="about">
                 <h2>About</h2>
-                <p>${profile.bio || "No Bio Available"}</p> <!-- CHANGE: Added fallback value -->
+                <p>${profile.bio ? profile.bio : "No Bio Available"}</p>
             </div>
             <div class="status">
                 <div class="status_item">
@@ -44,34 +43,41 @@ const generateProfile = (profile) => {
     `;
 };
 
-// Function to fetch the GitHub profile data
 const fetchProfile = async () => {
-    const username = searchInputEl.value.trim(); // CHANGE: Added `.trim()` to prevent empty/whitespace input
+    const username = searchInputEl.value.trim();
 
-    if (!username) { // CHANGE: Added validation to check if input is empty
+    if (!username) {
         alert("Please enter a GitHub username");
         return;
     }
 
-    loadingEl.innerText = "Loading..."; // CHANGE: Ensured loading message displays
+    loadingEl.innerText = "Loading...";
     loadingEl.style.color = "black";
+    profileContainerEl.innerHTML = "";
 
     try {
         const res = await fetch(`${url}${username}`);
-        if (!res.ok) { // CHANGE: Added error handling for invalid usernames
-            throw new Error("User not found");
-        }
-
         const data = await res.json();
 
-        profileContainerEl.innerHTML = generateProfile(data); // CHANGE: Dynamically update the profile container
-        loadingEl.innerText = ""; // CHANGE: Clear the loading message on success
+        if (res.ok) {
+            profileContainerEl.innerHTML = generateProfile(data);
+            loadingEl.innerText = "";
+        } else {
+            loadingEl.innerText = data.message || "User not found";
+            loadingEl.style.color = "red";
+            profileContainerEl.innerHTML = "";
+        }
     } catch (error) {
-        loadingEl.innerText = error.message; // CHANGE: Display error message
+        loadingEl.innerText = "Network error";
         loadingEl.style.color = "red";
-        profileContainerEl.innerHTML = ""; // CHANGE: Clear profile container on error
+        profileContainerEl.innerHTML = "";
     }
 };
 
-// Event listener for the search button
-searchBtnEl.addEventListener("click", fetchProfile); // CHANGE: Ensure the event listener works
+searchBtnEl.addEventListener("click", fetchProfile);
+
+searchInputEl.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+        fetchProfile();
+    }
+});
